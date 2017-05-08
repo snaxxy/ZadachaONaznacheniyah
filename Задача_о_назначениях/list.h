@@ -1,55 +1,34 @@
-#ifndef objectH
-#define objectH 1
+#ifndef listdef
+#define listdef 1
 
-#include "header.h"
+#include "masterheader.h"
 
-struct item
+struct element
 {
-	int ID = 1;
+	int x;
+	int y;
 
-	int *criterion = NULL;
-	int number = 0; //Число критериев субъекта
+	element *previous = NULL; //Указатель на предыдущий элемент
+	element *next = NULL; //Указатель на следующий элемент
 };
 
-class list
+class list : element
 {
-	int number; //Число объектов/субъектов
+	int number = 0;
+	element *first_element = NULL;
+	element *last_element = NULL;
 
 public:
-	static void give_number(int);
-	int get_number(); //Число объектов
-	
-	int get_criterion(int);
-	int get_criterions_number(int); //Число критериев
+	int size();
+	void add(int, int, int pos = -1);
+	void set(int, char);
+	int get(int, int j = 0);
+	int get_max(char ch = 'x');
+	void sort(); //Плохо работает
+	void del(int pos = -1);
+	void clear();
+
+	~list();
 };
-
-class object : list, item
-{
-	item *arr = NULL;
-
-public:
-	object(int N = 6, int Q = 5, int Z = 5);
-	int get_criterion(int);
-	int get_criterions_number(int); //Число критериев
-
-	~object();
-
-	friend list;
-};
-
-class subject : list, item
-{
-	item *arr = NULL;
-
-public:
-	subject(int N = 6, int Q = 5, int Z = 5);
-	int get_criterion(int);
-	int get_criterions_number(int); //Число критериев
-
-	~subject();
-
-	friend list;
-};
-
 
 #endif

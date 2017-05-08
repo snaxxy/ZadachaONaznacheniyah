@@ -146,13 +146,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="functions.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="logic.cpp" />
     <ClCompile Include="list.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="items.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="functions.h" />
-    <ClInclude Include="header.h" />
+    <ClInclude Include="logic.h" />
+    <ClInclude Include="masterheader.h" />
+    <ClInclude Include="items.h" />
     <ClInclude Include="list.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
