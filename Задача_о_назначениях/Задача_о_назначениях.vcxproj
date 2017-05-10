@@ -147,7 +147,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="logic.cpp" />
-    <ClCompile Include="list.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="items.cpp" />
   </ItemGroup>
@@ -156,7 +155,6 @@
     <ClInclude Include="logic.h" />
     <ClInclude Include="masterheader.h" />
     <ClInclude Include="items.h" />
-    <ClInclude Include="list.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

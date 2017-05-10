@@ -2,7 +2,8 @@
 #define logicheader 1
 
 #include "items.h"
-#include "list.h"
+#include "element.h"
+//#include "list.h"
 
 void calculateVectors(bool, items &, items &, vector<vector<item>> &);
 void create_layers(int, string **&, vector<vector<item>> &);
