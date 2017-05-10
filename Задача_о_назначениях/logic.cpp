@@ -165,6 +165,37 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 	}*/
 }
 
+int get_max(vector<element> list, char ch)
+{
+	int max = -1;
+	int position = -1;
+
+	if (ch == 'x')
+	{
+		for (auto it = list.begin(); it != list.end(); ++it)
+		{
+			if (it->x > max)
+			{
+				position = distance(list.begin(), it);
+				max = it->x;
+			}
+		}
+	}
+	else
+	{
+		for (auto it = list.begin(); it != list.end(); ++it)
+		{
+			if (it->y > max)
+			{
+				position = distance(list.begin(), it);
+				max = it->y;
+			}
+		}
+	}
+	return position;
+}
+
+
 void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item>> o_vec)
 {
 	int N = items::getAmount();
@@ -192,7 +223,8 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 		char str1[7] = { 'D', 'D', 'H', 'H', 'D', ' ', 'H' };
 		string str2;
 
-		list preference_list;
+		//list preference_list;
+		vector<element> preference_list;
 
 		bool check = false;
 		for (int m = 1; m <= N && check == false; ++m)
@@ -206,7 +238,8 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 					{
 						if (o_matrix[i][j] == (str1[k1] + str2) && c_matrix[i][j] == (str1[k2] + str2) && o_matrix[i][j][1] == str2[0] && c_matrix[i][j][1] == str2[0])
 						{
-							preference_list.add(j, i);
+							//preference_list.add(j, i);
+							preference_list.push_back(element(j, i));
 							check = true;
 						}
 					}
@@ -218,43 +251,49 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 		{
 			for (i = 0; i < preference_list.size() && k < preference_list.size(); ++i)
 			{
-				if (k != i && preference_list.get(k, 0) == preference_list.get(i, 0))
+				//if (k != i && preference_list.get(k, 0) == preference_list.get(i, 0))
+				if (k != i && preference_list.at(k).x == preference_list.at(i).x)
 				{
 					int temp = 0;
 					for (int j = 0; j < c_vec[0][0].criterionAmount; ++j)
 					{
-						temp += c_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criterion[j] - c_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criterion[j];
+						//temp += c_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criterion[j] - c_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criterion[j];
+						temp += c_vec[preference_list.at(k).x][preference_list.at(k).y].criterion[j] - c_vec[preference_list.at(i).x][preference_list.at(i).y].criterion[j];
 					}
 
 					if (temp > 0)
 					{
-						preference_list.del(i);
+						//preference_list.del(i);
+						preference_list.erase(preference_list.begin()+i);
 						--i;
 					}
 					else
 					{
-						preference_list.del(k);
+						//preference_list.del(k);
+						preference_list.erase(preference_list.begin() + k);
 						i = -1;
 					}					
 					continue;
 				}
 
-				if (k != i && preference_list.get(k, 1) == preference_list.get(i, 1))
+				//if (k != i && preference_list.get(k, 1) == preference_list.get(i, 1))
+				if (k != i && preference_list.at(k).y == preference_list.at(i).y)
 				{
 					int temp = 0;
 					for (int j = 0; j < o_vec[0][0].criterionAmount; ++j)
 					{
-						temp += o_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criterion[j] - o_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criterion[j];
+						//temp += o_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criterion[j] - o_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criterion[j];
+						temp += o_vec[preference_list.at(k).x][preference_list.at(k).y].criterion[j] - o_vec[preference_list.at(i).x][preference_list.at(i).y].criterion[j];
 					}
 
 					if (temp > 0)
 					{
-						preference_list.del(i);
+						preference_list.erase(preference_list.begin() + i);
 						--i;
 					}
 					else
 					{
-						preference_list.del(k);
+						preference_list.erase(preference_list.begin() + k);
 						i = -1;
 					}
 					continue;
@@ -264,24 +303,32 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 
 		for (int i = 0; i < preference_list.size(); ++i)
 		{
-			preference[c_vec[preference_list.get(i, 0)][0].ID - 1] = o_vec[preference_list.get(i, 1)][0].ID;
+			//preference[c_vec[preference_list.get(i, 0)][0].ID - 1] = o_vec[preference_list.get(i, 1)][0].ID;
+			preference[c_vec[preference_list.at(i).x][0].ID - 1] = o_vec[preference_list.at(i).y][0].ID;
 		}
 
 		for (int i = 0, iter_x, iter_y; i < preference_list.size(); ++i)
 		{
-			iter_x = preference_list.get_max('x');
-			iter_y = preference_list.get_max('y');
+			iter_x = get_max(preference_list, 'x');
+			iter_y = get_max(preference_list, 'y');
 
 			for (int n = 0; n < N; ++n)
 			{
-				c_vec[n].erase(c_vec[n].begin() + preference_list.get(iter_y, 1));
-				o_vec[n].erase(o_vec[n].begin() + preference_list.get(iter_x, 0));
+				//c_vec[n].erase(c_vec[n].begin() + preference_list.get(iter_y, 1));
+				c_vec[n].erase(c_vec[n].begin() + preference_list.at(iter_y).y);
+				//o_vec[n].erase(o_vec[n].begin() + preference_list.get(iter_x, 0));
+				o_vec[n].erase(o_vec[n].begin() + preference_list.at(iter_x).x);
 			}
-			c_vec.erase(c_vec.begin() + preference_list.get(iter_x, 0));
-			o_vec.erase(o_vec.begin() + preference_list.get(iter_y, 1));
 
-			preference_list.set(iter_x, 'x');
-			preference_list.set(iter_y, 'y');
+			//c_vec.erase(c_vec.begin() + preference_list.get(iter_x, 0));
+			c_vec.erase(c_vec.begin() + preference_list.at(iter_x).x);
+			//o_vec.erase(o_vec.begin() + preference_list.get(iter_y, 1));
+			o_vec.erase(o_vec.begin() + preference_list.at(iter_y).y);
+
+			//preference_list.set(iter_x, 'x');
+			preference_list.at(iter_x).x = -1;
+			//preference_list.set(iter_y, 'y');
+			preference_list.at(iter_y).y = -1;
 
 			--N;
 		}
@@ -296,9 +343,11 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 		}
 		delete[] o_matrix;
 		delete[] c_matrix;
-		preference_list.~list();
+//		preference_list.~list();
 	}
 }
+
+
 
 void create_layers(int N, string **&matrix, vector<vector<item>> &vec)
 {

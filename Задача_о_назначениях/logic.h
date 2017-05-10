@@ -1,5 +1,5 @@
-#ifndef logic
-#define logic 1
+#ifndef logicheader
+#define logicheader 1
 
 #include "items.h"
 #include "list.h"

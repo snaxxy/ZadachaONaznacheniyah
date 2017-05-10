@@ -4,7 +4,7 @@ int list::size() { return number; }
 
 void list::add(int x, int y, int pos)
 {
-	element *new_element = new element;
+	element *new_element = new element(x,y);
 
 	if (number == 0)
 	{
