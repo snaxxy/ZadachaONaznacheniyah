@@ -1,22 +1,14 @@
 #ifndef listdef
 #define listdef 1
 
+#include "element.h"
 #include "masterheader.h"
-
-struct element
-{
-	int x;
-	int y;
-
-	element *previous = NULL; //”казатель на предыдущий элемент
-	element *next = NULL; //”казатель на следующий элемент
-};
 
 class list : element
 {
 	int number = 0;
-	element *first_element = NULL;
-	element *last_element = NULL;
+	element *first_element = nullptr;
+	element *last_element = nullptr;
 
 public:
 	int size();

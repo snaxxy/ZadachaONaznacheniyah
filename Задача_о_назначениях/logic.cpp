@@ -1,4 +1,4 @@
-#include "masterheader.h"
+#include "logic.h"
 
 template <class T>
 string to_string(T param)
@@ -69,13 +69,13 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 			{
 				vec[j][i].ID = list2.get_ID(j);
 				vec[j][i].criterion = comparison(list2.get_item(i), list1.get_item(j));
-				vec[j][i].criterionAmount = list1.get_criterions_number(j);
+				vec[j][i].criterionAmount = list1.getCriterionAmount(j);
 			}
 			else
 			{
 				vec[i][j].ID = list1.get_ID(i);
 				vec[i][j].criterion = comparison(list2.get_item(j), list1.get_item(i));
-				vec[i][j].criterionAmount = list1.get_criterions_number(i);
+				vec[i][j].criterionAmount = list1.getCriterionAmount(i);
 			}
 
 		}
@@ -90,7 +90,7 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 		item *temp1;
 		item *temp2;
 
-		int c_end = list1.get_criterions_number(i);
+		int c_end = list1.getCriterionAmount(i);
 		for (int j = 0; j < N; ++j)
 		{
 			temp1 = &list1.get_item(j);
@@ -121,7 +121,7 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 	}*/
 	/*for (int i = 0; i < 2*N; ++i)
 	{
-		int c_end = object_list.get_criterions_number(i);
+		int c_end = object_list.getCriterionAmount(i);
 		for (int j = abs(N-i); j < N; ++j)
 		{
 			item *temp_object = &object_list.get_item(j);
@@ -147,7 +147,7 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 			item *temp_object = &object_list.get_item(i);
 			item *temp_subject = &subject_list.get_item(i);
 
-			int c_end = object_list.get_criterions_number(i);
+			int c_end = object_list.getCriterionAmount(i);
 			for (int c = 0; c < c_end; ++c)
 			{
 				objects_vectors[i][j] = comparison

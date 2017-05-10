@@ -1,7 +1,8 @@
 #ifndef logic
 #define logic 1
 
-#include "masterheader.h"
+#include "items.h"
+#include "list.h"
 
 void calculateVectors(bool, items &, items &, vector<vector<item>> &);
 void create_layers(int, string **&, vector<vector<item>> &);

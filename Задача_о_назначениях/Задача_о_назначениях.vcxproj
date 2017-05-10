@@ -152,6 +152,7 @@
     <ClCompile Include="items.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="element.h" />
     <ClInclude Include="logic.h" />
     <ClInclude Include="masterheader.h" />
     <ClInclude Include="items.h" />

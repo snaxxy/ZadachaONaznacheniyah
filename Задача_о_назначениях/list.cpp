@@ -1,4 +1,4 @@
-#include "masterheader.h"
+#include "list.h"
 
 int list::size() { return number; }
 

@@ -1,4 +1,6 @@
 #include "masterheader.h"
+#include "items.h"
+#include "logic.h"
 
 int items::amount = 0;
 
