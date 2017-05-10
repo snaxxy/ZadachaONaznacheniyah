@@ -42,9 +42,9 @@ void view_vec(int N, bool isObject, vector<vector<item>> &vec)
 
 int *comparison(item &A, item &B)
 {
-	int *out = new int[A.number];
+	int *out = new int[A.criterionAmount];
 
-	int c_end = A.number;
+	int c_end = A.criterionAmount;
 	for (int c = 0; c < c_end; ++c)
 	{
 		if (A.criterion[c] <= B.criterion[c]) out[c] = 0;
@@ -54,9 +54,9 @@ int *comparison(item &A, item &B)
 	return out;
 }
 
-void create_vectors(bool isObject, items &list1, items &list2, vector<vector<item>> &vec)
+void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<item>> &vec)
 {
-	int N = items::get_number();
+	int N = items::getAmount();
 
 	vec.resize(N);
 	for (int count = 0; count < N; ++count) vec[count].resize(N);
@@ -69,13 +69,13 @@ void create_vectors(bool isObject, items &list1, items &list2, vector<vector<ite
 			{
 				vec[j][i].ID = list2.get_ID(j);
 				vec[j][i].criterion = comparison(list2.get_item(i), list1.get_item(j));
-				vec[j][i].number = list1.get_criterions_number(j);
+				vec[j][i].criterionAmount = list1.get_criterions_number(j);
 			}
 			else
 			{
 				vec[i][j].ID = list1.get_ID(i);
 				vec[i][j].criterion = comparison(list2.get_item(j), list1.get_item(i));
-				vec[i][j].number = list1.get_criterions_number(i);
+				vec[i][j].criterionAmount = list1.get_criterions_number(i);
 			}
 
 		}
@@ -167,7 +167,7 @@ void create_vectors(bool isObject, items &list1, items &list2, vector<vector<ite
 
 void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item>> o_vec)
 {
-	int N = items::get_number();
+	int N = items::getAmount();
 	
 	while (N > 0)
 	{
@@ -221,7 +221,7 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 				if (k != i && preference_list.get(k, 0) == preference_list.get(i, 0))
 				{
 					int temp = 0;
-					for (int j = 0; j < c_vec[0][0].number; ++j)
+					for (int j = 0; j < c_vec[0][0].criterionAmount; ++j)
 					{
 						temp += c_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criterion[j] - c_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criterion[j];
 					}
@@ -242,7 +242,7 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 				if (k != i && preference_list.get(k, 1) == preference_list.get(i, 1))
 				{
 					int temp = 0;
-					for (int j = 0; j < o_vec[0][0].number; ++j)
+					for (int j = 0; j < o_vec[0][0].criterionAmount; ++j)
 					{
 						temp += o_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criterion[j] - o_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criterion[j];
 					}
@@ -316,7 +316,7 @@ void create_layers(int N, string **&matrix, vector<vector<item>> &vec)
 				better = true;
 				worse = true;
 
-				for (int c = 0; c < vec[i][j].number; ++c)
+				for (int c = 0; c < vec[i][j].criterionAmount; ++c)
 				{
 					if (vec[i][k].criterion[c] > vec[i][j].criterion[c]) better = false;
 					if (vec[i][k].criterion[c] < vec[i][j].criterion[c]) worse = false;

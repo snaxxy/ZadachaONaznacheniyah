@@ -1,6 +1,6 @@
 #include "masterheader.h"
 
-int items::number = 0;
+int items::amount = 0;
 
 void main()
 {
@@ -27,7 +27,7 @@ void main()
 			//cin >> Z;
 			cout << Z;
 		}
-		items::set_number(N);
+		items::setAmount(N);
 
 		//Создание объектов и субъектов
 		items objects(true, N, Q, Z), subjects(false, N, Q, Z);
@@ -35,12 +35,11 @@ void main()
 		//Создание векторов
 		vector<vector<item>> c_vec, o_vec;
 		{
-			create_vectors(false, objects, subjects, c_vec);
-			create_vectors(true, subjects, objects, o_vec);
+			calculateVectors(false, objects, subjects, c_vec);
+			calculateVectors(true, subjects, objects, o_vec);
 		}
-
 		//Расчёт предпочтений
-		int *pref = new int[items::get_number()];
+		int *pref = new int[items::getAmount()];
 		{
 			preference(pref, c_vec, o_vec);
 		}

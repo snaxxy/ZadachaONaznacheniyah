@@ -1,7 +1,7 @@
 #include "masterheader.h"
 
-void items::set_number(int x) { number = x; }
-int items::get_number() { return number; }
+void items::setAmount(int x) { amount = x; }
+int items::getAmount() { return amount; }
 
 items::items(bool isObject, int N, int Q, int Z)
 {	
@@ -21,7 +21,7 @@ items::items(bool isObject, int N, int Q, int Z)
 		arr[n].criterion = new int[Q];
 		if (isObject) for (int q = 0; q < Q; ++q) arr[n].criterion[q] = mass1[n][q]; //rand() % Z + 1;
 		else for (int q = 0; q < Q; ++q) arr[n].criterion[q] = mass2[n][q]; //rand() % Z + 1;
-		arr[n].number = Q;
+		arr[n].criterionAmount = Q;
 	}
 
 	this->view(N, Q);
@@ -29,7 +29,7 @@ items::items(bool isObject, int N, int Q, int Z)
 
 int items::get_ID(int n) { return arr[n].ID; }
 int items::get_criterion(int n, int q) { return arr[n].criterion[q]; }
-int items::get_criterions_number(int n) { return arr[n].number; }
+int items::get_criterions_number(int n) { return arr[n].criterionAmount; }
 item items::get_item(int n) { return arr[n]; }
 
 void items::view(int N, int Q)
