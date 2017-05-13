@@ -10,7 +10,7 @@ string to_string(T param)
 	return str;
 }
 
-void view_vec(int N, bool isObject, vector<vector<item>> &vec)
+void printVector(int N, bool isObject, vector<vector<item>> &vec)
 {
 	for (int i = 0; i < N; ++i)
 	{
@@ -32,7 +32,7 @@ void view_vec(int N, bool isObject, vector<vector<item>> &vec)
 
 			for (int c = 0; c < 5; ++c)
 			{
-				cout << vec[i][j].criterion[c] << ' ';
+				cout << vec[i][j].criteriaVector[c] << ' ';
 			}
 			cout << '}' << endl;
 		}
@@ -40,15 +40,15 @@ void view_vec(int N, bool isObject, vector<vector<item>> &vec)
 	}
 }
 
-int *comparison(item &A, item &B)
+int *compare(item &A, item &B)
 {
 	int *out = new int[A.criterionAmount];
 
 	int c_end = A.criterionAmount;
 	for (int c = 0; c < c_end; ++c)
 	{
-		if (A.criterion[c] <= B.criterion[c]) out[c] = 0;
-		else out[c] = A.criterion[c] - B.criterion[c];
+		if (A.criteriaVector[c] <= B.criteriaVector[c]) out[c] = 0;
+		else out[c] = A.criteriaVector[c] - B.criteriaVector[c];
 	}
 
 	return out;
@@ -67,21 +67,21 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 		{
 			if (isObject)
 			{
-				vec[j][i].ID = list2.get_ID(j);
-				vec[j][i].criterion = comparison(list2.get_item(i), list1.get_item(j));
+				vec[j][i].ID = list2.getID(j);
+				vec[j][i].criteriaVector = compare(list2.getItem(i), list1.getItem(j));
 				vec[j][i].criterionAmount = list1.getCriterionAmount(j);
 			}
 			else
 			{
-				vec[i][j].ID = list1.get_ID(i);
-				vec[i][j].criterion = comparison(list2.get_item(j), list1.get_item(i));
+				vec[i][j].ID = list1.getID(i);
+				vec[i][j].criteriaVector = compare(list2.getItem(j), list1.getItem(i));
 				vec[i][j].criterionAmount = list1.getCriterionAmount(i);
 			}
 
 		}
 	}
 
-	view_vec(N, isObject, vec);
+	printVector(N, isObject, vec);
 
 	/*for (int i = 0; i < N; ++i)
 	{
@@ -93,8 +93,8 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 		int c_end = list1.getCriterionAmount(i);
 		for (int j = 0; j < N; ++j)
 		{
-			temp1 = &list1.get_item(j);
-			temp2 = &list2.get_item(j);
+			temp1 = &list1.getItem(j);
+			temp2 = &list2.getItem(j);
 
 			vec[i].resize(j+1);
 
@@ -105,13 +105,13 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 			{
 				if (check == 'c')
 				{
-					if (temp1->criterion[c] <= temp2->criterion[c]) vec[i][j].criterion[c] = 0;
-					else vec[i][j].criterion[c] = temp1->criterion[c] - temp2->criterion[c];
+					if (temp1->criteriaVector[c] <= temp2->criteriaVector[c]) vec[i][j].criteriaVector[c] = 0;
+					else vec[i][j].criteriaVector[c] = temp1->criteriaVector[c] - temp2->criteriaVector[c];
 				}
 				else
 				{
-					if (temp1->criterion[c] <= temp2->criterion[c]) vec[j][i].criterion[c] = 0;
-					else vec[j][i].criterion[c] = temp1->criterion[c] - temp2->criterion[c];
+					if (temp1->criteriaVector[c] <= temp2->criteriaVector[c]) vec[j][i].criteriaVector[c] = 0;
+					else vec[j][i].criteriaVector[c] = temp1->criteriaVector[c] - temp2->criteriaVector[c];
 				}
 			}
 		}
@@ -124,16 +124,16 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 		int c_end = object_list.getCriterionAmount(i);
 		for (int j = abs(N-i); j < N; ++j)
 		{
-			item *temp_object = &object_list.get_item(j);
-			item *temp_subject = &subject_list.get_item(j);
+			item *temp_object = &object_list.getItem(j);
+			item *temp_subject = &subject_list.getItem(j);
 
 			for (int c = 0; c < c_end; ++c)
 			{
-				if (temp_object->criterion[c] <= temp_subject->criterion[c]) objects_vectors[j][j] = 0;
-				else objects_vectors[j][j] = temp_object->criterion[c] - temp_subject->criterion[c];
+				if (temp_object->criteriaVector[c] <= temp_subject->criteriaVector[c]) objects_vectors[j][j] = 0;
+				else objects_vectors[j][j] = temp_object->criteriaVector[c] - temp_subject->criteriaVector[c];
 
-				if (temp_subject->criterion[c] <= temp_object->criterion[c]) subjects_vectors[j][j] = 0;
-				else subjects_vectors[j][j] = temp_subject->criterion[c] - temp_object->criterion[c];
+				if (temp_subject->criteriaVector[c] <= temp_object->criteriaVector[c]) subjects_vectors[j][j] = 0;
+				else subjects_vectors[j][j] = temp_subject->criteriaVector[c] - temp_object->criteriaVector[c];
 			}
 
 			delete temp_object;
@@ -144,18 +144,18 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 	{
 		for (int j = 0; j < list::get_number(); ++j)
 		{
-			item *temp_object = &object_list.get_item(i);
-			item *temp_subject = &subject_list.get_item(i);
+			item *temp_object = &object_list.getItem(i);
+			item *temp_subject = &subject_list.getItem(i);
 
 			int c_end = object_list.getCriterionAmount(i);
 			for (int c = 0; c < c_end; ++c)
 			{
-				objects_vectors[i][j] = comparison
+				objects_vectors[i][j] = compare
 
 				if (lists.get_object_criterion(i, c) <= lists.get_subject_criterion(j, c)) objects_vectors[i][j] = 0;
 				else objects_vectors[i][j] = lists.get_object_criterion(i, c) - lists.get_subject_criterion(j, c);
 
-				if (lists.get_criterion(i, c) <= lists.get_object_criterion(j, c)) subjects_vectors[i][j] = 0;
+				if (lists.getCriteriaVector(i, c) <= lists.get_object_criterion(j, c)) subjects_vectors[i][j] = 0;
 				else subjects_vectors[i][j] = lists.get_subject_criterion(i, c) - lists.get_object_criterion(j, c);
 			}
 
@@ -257,8 +257,8 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 					int temp = 0;
 					for (int j = 0; j < c_vec[0][0].criterionAmount; ++j)
 					{
-						//temp += c_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criterion[j] - c_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criterion[j];
-						temp += c_vec[preference_list.at(k).x][preference_list.at(k).y].criterion[j] - c_vec[preference_list.at(i).x][preference_list.at(i).y].criterion[j];
+						//temp += c_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criteriaVector[j] - c_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criteriaVector[j];
+						temp += c_vec[preference_list.at(k).x][preference_list.at(k).y].criteriaVector[j] - c_vec[preference_list.at(i).x][preference_list.at(i).y].criteriaVector[j];
 					}
 
 					if (temp > 0)
@@ -282,8 +282,8 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 					int temp = 0;
 					for (int j = 0; j < o_vec[0][0].criterionAmount; ++j)
 					{
-						//temp += o_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criterion[j] - o_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criterion[j];
-						temp += o_vec[preference_list.at(k).x][preference_list.at(k).y].criterion[j] - o_vec[preference_list.at(i).x][preference_list.at(i).y].criterion[j];
+						//temp += o_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criteriaVector[j] - o_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criteriaVector[j];
+						temp += o_vec[preference_list.at(k).x][preference_list.at(k).y].criteriaVector[j] - o_vec[preference_list.at(i).x][preference_list.at(i).y].criteriaVector[j];
 					}
 
 					if (temp > 0)
@@ -333,8 +333,8 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 			--N;
 		}
 
-		view_vec(N, 'c', c_vec);
-		view_vec(N, 'o', o_vec);
+		printVector(N, false, c_vec);
+		printVector(N, true, o_vec);
 		
 		for (int count = 0; count < N; ++count)
 		{
@@ -367,8 +367,8 @@ void create_layers(int N, string **&matrix, vector<vector<item>> &vec)
 
 				for (int c = 0; c < vec[i][j].criterionAmount; ++c)
 				{
-					if (vec[i][k].criterion[c] > vec[i][j].criterion[c]) better = false;
-					if (vec[i][k].criterion[c] < vec[i][j].criterion[c]) worse = false;
+					if (vec[i][k].criteriaVector[c] > vec[i][j].criteriaVector[c]) better = false;
+					if (vec[i][k].criteriaVector[c] < vec[i][j].criteriaVector[c]) worse = false;
 				}
 
 				if (better == true && worse == true)
@@ -476,7 +476,7 @@ void create_layers(int N, string **&matrix, vector<vector<item>> &vec)
 	{
 	if (i != j)
 	{
-	R[i][j] = comparison(objects_vectors[i], objects_vectors[j]);
+	R[i][j] = compare(objects_vectors[i], objects_vectors[j]);
 
 	if (R[i][j] == '>') R[j][i] == '<';
 	else if (R[i][j] == '<') R[j][i] == '>';

@@ -18,15 +18,15 @@ void main()
 		int N = 6, Q = 5, Z = 5;
 		{
 			cout << endl << "Количество объектов/субъектов: ";
-			//cin >> N;
+			cin >> N;
 			cout << N;
 
 			cout << endl << "Количество критериев: ";
-			//cin >> Q;
+			cin >> Q;
 			cout << Q;
 
 			cout << endl << "Шкала оценок: ";
-			//cin >> Z;
+			cin >> Z;
 			cout << Z;
 		}
 		items::setAmount(N);
@@ -35,15 +35,15 @@ void main()
 		items objects(true, N, Q, Z), subjects(false, N, Q, Z);
 
 		//Создание векторов
-		vector<vector<item>> c_vec, o_vec;
+		vector<vector<item>> subjectVector, objectVector;
 		{
-			calculateVectors(false, objects, subjects, c_vec);
-			calculateVectors(true, subjects, objects, o_vec);
+			calculateVectors(false, objects, subjects, subjectVector);
+			calculateVectors(true, subjects, objects, objectVector);
 		}
 		//Расчёт предпочтений
 		int *pref = new int[items::getAmount()];
 		{
-			preference(pref, c_vec, o_vec);
+			preference(pref, subjectVector, objectVector);
 		}
 
 		{
@@ -53,17 +53,17 @@ void main()
 				cout << endl << i + 1 << " - " << pref[i] << " : ";
 
 				cout << "( ";
-				for (int c = 0; c < Q; ++c) cout << objects.get_criterion(i, c) << ' ';
+				for (int c = 0; c < Q; ++c) cout << objects.getCriteriaVector(i, c) << ' ';
 				cout << ") - ( ";
-				for (int c = 0; c < Q; ++c) cout << subjects.get_criterion(i, c) << ' ';
+				for (int c = 0; c < Q; ++c) cout << subjects.getCriteriaVector(i, c) << ' ';
 				cout << ')' << endl;
 
 				cout << "o = ( ";
-				for (int c = 0; c < Q; ++c) cout << o_vec[pref[i] - 1][i].criterion[c] << ' ';
+				for (int c = 0; c < Q; ++c) cout << objectVector[pref[i] - 1][i].criteriaVector[c] << ' ';
 				cout << ')' << endl;
 
 				cout << "c = ( ";
-				for (int c = 0; c < Q; ++c) cout << c_vec[i][pref[i] - 1].criterion[c] << ' ';
+				for (int c = 0; c < Q; ++c) cout << subjectVector[i][pref[i] - 1].criteriaVector[c] << ' ';
 				cout << ')' << endl;
 			}
 		}
@@ -71,8 +71,8 @@ void main()
 		//Чистка памяти
 		objects.~items();
 		subjects.~items();
-		c_vec.~vector();
-		o_vec.~vector();
+		subjectVector.~vector();
+		objectVector.~vector();
 		delete[] pref;
 
 		system("pause");

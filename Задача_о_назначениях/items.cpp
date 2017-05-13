@@ -18,21 +18,21 @@ items::items(bool isObject, int N, int Q, int Z)
 		itemArray[n].isObject=isObject;
 		if (n > 0) itemArray[n].ID = itemArray[n-1].ID + 1;
 		
-		itemArray[n].criterion = new int[Q];
-		if (isObject) for (int q = 0; q < Q; ++q) itemArray[n].criterion[q] = mass1[n][q]; //rand() % Z + 1;
-		else for (int q = 0; q < Q; ++q) itemArray[n].criterion[q] = mass2[n][q]; //rand() % Z + 1;
+		itemArray[n].criteriaVector = new int[Q];
+		if (isObject) for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = mass1[n][q]; //rand() % Z + 1;
+		else for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = mass2[n][q]; //rand() % Z + 1;
 		itemArray[n].criterionAmount = Q;
 	}
 
-	this->view(N, Q);
+	this->printItems(N, Q);
 }
 
-int items::get_ID(int n) { return itemArray[n].ID; }
-int items::get_criterion(int n, int q) { return itemArray[n].criterion[q]; }
+int items::getID(int n) { return itemArray[n].ID; }
+int items::getCriteriaVector(int n, int q) { return itemArray[n].criteriaVector[q]; }
 int items::getCriterionAmount(int n) { return itemArray[n].criterionAmount; }
-item items::get_item(int n) { return itemArray[n]; }
+item items::getItem(int n) { return itemArray[n]; }
 
-void items::view(int N, int Q)
+void items::printItems(int N, int Q)
 {
 	if (itemArray[0].isObject)
 	{
@@ -59,7 +59,7 @@ void items::view(int N, int Q)
 	for (int i = 0; i < N; ++i)
 	{
 		printf("\n|  %i  ", this->itemArray[i].ID);
-		for (int j = 0; j < Q; ++j)	printf("| %i ", this->itemArray[i].criterion[j]);
+		for (int j = 0; j < Q; ++j)	printf("| %i ", this->itemArray[i].criteriaVector[j]);
 		cout << '|';
 
 		if (i+1 != N)
@@ -80,7 +80,7 @@ items::~items()
 	/*for (int i = 0; i < get_number(); ++i)
 	{
 		delete[] itemArray[i].name;
-		delete[] itemArray[i].criterion;
+		delete[] itemArray[i].criteriaVector;
 	}
 	delete[] itemArray;*/
 }

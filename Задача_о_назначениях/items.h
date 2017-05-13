@@ -10,8 +10,8 @@ struct item
 	
 	int ID = 1; //Индивидуальный номер
 
-	int *criterion = nullptr; //Вектор критериев
-	int criterionAmount = 0;//sizeof(criterion)/sizeof(*criterion); //Число критериев объекта/субъекта
+	int *criteriaVector = nullptr; //Вектор критериев
+	int criterionAmount = 0;//sizeof(criteriaVector)/sizeof(*criteriaVector); //Число критериев объекта/субъекта
 };
 
 class items
@@ -25,11 +25,11 @@ public:
 	static int getAmount(); //Получение числа объектов/субъектов
 
 	items(bool, int N = 6, int Q = 5, int Z = 5);
-	int get_ID(int);
-	int get_criterion(int, int);
+	int getID(int);
+	int getCriteriaVector(int, int);
 	int getCriterionAmount(int); //Получение числа критериев
-	item get_item(int); //Получение объекта/субъекта
-	void view(int N = 6, int Q = 5); //Вывод вектора на экран
+	item getItem(int); //Получение объекта/субъекта
+	void printItems(int N = 6, int Q = 5); //Вывод вектора на экран
 
 	~items();
 };
