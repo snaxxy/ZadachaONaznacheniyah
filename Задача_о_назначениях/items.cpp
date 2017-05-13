@@ -19,8 +19,10 @@ items::items(bool isObject, int N, int Q, int Z)
 		if (n > 0) itemArray[n].ID = itemArray[n-1].ID + 1;
 		
 		itemArray[n].criteriaVector = new int[Q];
-		if (isObject) for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = mass1[n][q]; //rand() % Z + 1;
-		else for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = mass2[n][q]; //rand() % Z + 1;
+		//if (isObject) for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = mass1[n][q]; //rand() % Z + 1;
+		//else for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = mass2[n][q]; //rand() % Z + 1;
+		if (isObject) for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = rand() % Z + 1;
+		else for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = rand() % Z + 1;
 		itemArray[n].criterionAmount = Q;
 	}
 

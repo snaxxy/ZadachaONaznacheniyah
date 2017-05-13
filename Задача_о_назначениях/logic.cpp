@@ -1,14 +1,5 @@
 #include "logic.h"
 
-template <class T>
-string to_string(T param)
-{
-	string str = "";
-	stringstream ss;
-	ss << param;
-	getline(ss, str);
-	return str;
-}
 
 void printVector(int N, bool isObject, vector<vector<item>> &vec)
 {
@@ -165,7 +156,7 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 	}*/
 }
 
-int get_max(vector<element> list, char ch)
+int getPosOfMax(vector<element> list, char ch)
 {
 	int max = -1;
 	int position = -1;
@@ -210,15 +201,15 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 			c_matrix[count] = new string[N];
 		}
 		
-		create_layers(N, o_matrix, c_vec);
-		create_layers(N, c_matrix, o_vec);
+		generateLayers(N, o_matrix, c_vec);
+		generateLayers(N, c_matrix, o_vec);
 
 		for (int i = 0; i < N; ++i)
 		{
 			for (int j = i+1; j < N; ++j) o_matrix[i][j].swap(o_matrix[j][i]);
 		}
 
-		view_matrix(N, c_vec, o_matrix, o_vec, c_matrix);
+		printMatrix(N, c_vec, o_matrix, o_vec, c_matrix);
 
 		char str1[7] = { 'D', 'D', 'H', 'H', 'D', ' ', 'H' };
 		string str2;
@@ -309,8 +300,8 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 
 		for (int i = 0, iter_x, iter_y; i < preference_list.size(); ++i)
 		{
-			iter_x = get_max(preference_list, 'x');
-			iter_y = get_max(preference_list, 'y');
+			iter_x = getPosOfMax(preference_list, 'x');
+			iter_y = getPosOfMax(preference_list, 'y');
 
 			for (int n = 0; n < N; ++n)
 			{
@@ -349,7 +340,7 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 
 
 
-void create_layers(int N, string **&matrix, vector<vector<item>> &vec)
+void generateLayers(int N, string **&matrix, vector<vector<item>> &vec)
 {
 	char **R = new char*[N];
 	for (int count = 0; count < N; ++count) R[count] = new char[N];
@@ -359,29 +350,31 @@ void create_layers(int N, string **&matrix, vector<vector<item>> &vec)
 	{
 		for (int k = 0; k < N; ++k)
 		{
-			bool better, worse;
+			bool allAreNotBetter;
+			bool allAreNotWorse;
+
 			for (int j = 0; j < N; ++j)
 			{
-				better = true;
-				worse = true;
+				allAreNotBetter = true;
+				allAreNotWorse = true;
 
 				for (int c = 0; c < vec[i][j].criterionAmount; ++c)
 				{
-					if (vec[i][k].criteriaVector[c] > vec[i][j].criteriaVector[c]) better = false;
-					if (vec[i][k].criteriaVector[c] < vec[i][j].criteriaVector[c]) worse = false;
+					if (vec[i][k].criteriaVector[c] > vec[i][j].criteriaVector[c]) allAreNotBetter = false;
+					if (vec[i][k].criteriaVector[c] < vec[i][j].criteriaVector[c]) allAreNotWorse = false;
 				}
 
-				if (better == true && worse == true)
+				if (allAreNotBetter == true && allAreNotWorse == true)
 				{
 					R[k][j] = '=';
 					R[j][k] = '=';
 				}
-				else if (better == true)
+				else if (allAreNotBetter == true)
 				{
 					R[k][j] = '>';
 					R[j][k] = '<';
 				}
-				else if (worse == true)
+				else if (allAreNotWorse == true)
 				{
 					R[k][j] = '<';
 					R[j][k] = '>';
@@ -508,7 +501,7 @@ void create_layers(int N, string **&matrix, vector<vector<item>> &vec)
 	}*/
 }
 
-void view_matrix(int N, vector<vector<item>> &c_vec, string **&o_matrix, vector<vector<item>> &o_vec, string **&c_matrix)
+void printMatrix(int N, vector<vector<item>> &c_vec, string **&o_matrix, vector<vector<item>> &o_vec, string **&c_matrix)
 {	
 	cout << endl << "Матрица предпочтения:";
 
