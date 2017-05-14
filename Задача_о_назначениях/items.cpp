@@ -5,11 +5,9 @@ int items::getAmount() { return amount; }
 
 items::items(bool isObject, int N, int Q, int Z)
 {	
-	//int mass1[4][5] = { { 2, 3, 2, 1, 2 }, { 2, 2, 3, 2, 1 }, { 3, 3, 1, 1, 2 }, { 1, 1, 3, 2, 2 } };
-	//int mass2[4][5] = { { 3, 3, 1, 1, 2 },{ 2, 2, 3, 1, 2 },{ 1, 1, 2, 2, 3 },{ 2, 3, 2, 1, 1 } };
+	int objectsInitial[5][5] = { { 4, 2, 2, 1, 5 }, { 4, 2, 4, 3, 5 }, { 1, 2, 3, 4, 1 }, { 1, 4, 4, 1, 5 }, {4,1,4,1,3} };
+	int subjectsInitial[5][5] = { { 1, 4, 3, 1, 2 },{ 2, 1, 2, 2, 3 },{ 3, 5, 1, 5, 4 },{ 2, 2, 2, 1, 3 }, {4,1,4,1,2} };
 	
-	int mass1[6][5] = { { 4, 5, 5, 1, 4 },{ 2, 2, 2, 3, 4 },{ 1, 2, 3, 4, 3 },{ 2, 5, 2, 2, 4 },{ 4, 4, 1, 1, 3 },{ 4, 5, 4, 2, 5 } };
-	int mass2[6][5] = { { 1, 5, 2, 5, 5 },{ 3, 4, 4, 3, 5 },{ 1, 5, 1, 3, 3 },{ 1, 5, 2, 2, 5 },{ 1, 2, 1, 3, 1 },{ 5, 5, 3, 4, 3 } };
 
 	itemArray = new item[N];
 
@@ -19,10 +17,8 @@ items::items(bool isObject, int N, int Q, int Z)
 		if (n > 0) itemArray[n].ID = itemArray[n-1].ID + 1;
 		
 		itemArray[n].criteriaVector = new int[Q];
-		//if (isObject) for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = mass1[n][q]; //rand() % Z + 1;
-		//else for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = mass2[n][q]; //rand() % Z + 1;
-		if (isObject) for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = rand() % Z + 1;
-		else for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = rand() % Z + 1;
+		if (isObject) for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = objectsInitial[n][q]; //rand() % Z + 1;
+		else for (int q = 0; q < Q; ++q) itemArray[n].criteriaVector[q] = subjectsInitial[n][q]; //rand() % Z + 1;
 		itemArray[n].criterionAmount = Q;
 	}
 
@@ -79,10 +75,5 @@ void items::printItems(int N, int Q)
 
 items::~items()
 {
-	/*for (int i = 0; i < get_number(); ++i)
-	{
-		delete[] itemArray[i].name;
-		delete[] itemArray[i].criteriaVector;
-	}
-	delete[] itemArray;*/
+	delete[] itemArray;
 }

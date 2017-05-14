@@ -9,8 +9,6 @@ void main()
 	setlocale(LC_ALL, "russian");
 
 	srand(time(0));
-
-	//for(;;)
 	{
 		system("cls");
 

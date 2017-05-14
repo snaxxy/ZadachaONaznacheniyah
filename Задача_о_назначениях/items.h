@@ -5,13 +5,10 @@
 
 struct item
 {
-	bool isObject;
-	//char *name = NULL; //Определение: объект/субъект
-	
-	int ID = 1; //Индивидуальный номер
-
+	bool isObject; //Объект или субъект
+	int ID = 1; //Идентификатор объекта/субъекта
 	int *criteriaVector = nullptr; //Вектор критериев
-	int criterionAmount = 0;//sizeof(criteriaVector)/sizeof(*criteriaVector); //Число критериев объекта/субъекта
+	int criterionAmount = 0; //Число критериев объекта/субъекта
 };
 
 class items

@@ -3,7 +3,6 @@
 
 #include "items.h"
 #include "element.h"
-//#include "list.h"
 
 void calculateVectors(bool, items &, items &, vector<vector<item>> &);
 void generateLayers(int, string **&, vector<vector<item>> &);

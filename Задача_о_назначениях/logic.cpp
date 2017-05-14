@@ -18,7 +18,7 @@ void printVector(int N, bool isObject, vector<vector<item>> &vec)
 		for (int j = 0; j < N; ++j)
 		{
 
-			if (!isObject) cout << 'o' << vec[j][0].ID << vec[i][0].ID << " = { ";
+			if (!isObject) cout << 'o' << vec[i][0].ID << vec[j][0].ID << " = { ";
 			else cout << 'c' << vec[i][0].ID << vec[j][0].ID << " = { ";
 
 			for (int c = 0; c < 5; ++c)
@@ -73,87 +73,6 @@ void calculateVectors(bool isObject, items &list1, items &list2, vector<vector<i
 	}
 
 	printVector(N, isObject, vec);
-
-	/*for (int i = 0; i < N; ++i)
-	{
-		vec.resize(i+1);
-
-		item *temp1;
-		item *temp2;
-
-		int c_end = list1.getCriterionAmount(i);
-		for (int j = 0; j < N; ++j)
-		{
-			temp1 = &list1.getItem(j);
-			temp2 = &list2.getItem(j);
-
-			vec[i].resize(j+1);
-
-			if (check == 'c') vec[i][j].ID = i*10 + j;
-			else vec[j][i].ID = j*10 + i;
-
-			for (int c = 0; c < c_end; ++c)
-			{
-				if (check == 'c')
-				{
-					if (temp1->criteriaVector[c] <= temp2->criteriaVector[c]) vec[i][j].criteriaVector[c] = 0;
-					else vec[i][j].criteriaVector[c] = temp1->criteriaVector[c] - temp2->criteriaVector[c];
-				}
-				else
-				{
-					if (temp1->criteriaVector[c] <= temp2->criteriaVector[c]) vec[j][i].criteriaVector[c] = 0;
-					else vec[j][i].criteriaVector[c] = temp1->criteriaVector[c] - temp2->criteriaVector[c];
-				}
-			}
-		}
-
-		delete temp1;
-		delete temp2;
-	}*/
-	/*for (int i = 0; i < 2*N; ++i)
-	{
-		int c_end = object_list.getCriterionAmount(i);
-		for (int j = abs(N-i); j < N; ++j)
-		{
-			item *temp_object = &object_list.getItem(j);
-			item *temp_subject = &subject_list.getItem(j);
-
-			for (int c = 0; c < c_end; ++c)
-			{
-				if (temp_object->criteriaVector[c] <= temp_subject->criteriaVector[c]) objects_vectors[j][j] = 0;
-				else objects_vectors[j][j] = temp_object->criteriaVector[c] - temp_subject->criteriaVector[c];
-
-				if (temp_subject->criteriaVector[c] <= temp_object->criteriaVector[c]) subjects_vectors[j][j] = 0;
-				else subjects_vectors[j][j] = temp_subject->criteriaVector[c] - temp_object->criteriaVector[c];
-			}
-
-			delete temp_object;
-			delete temp_subject;
-		}
-	}*/
-	/*for (int i = 0; i < list::get_number(); ++i)
-	{
-		for (int j = 0; j < list::get_number(); ++j)
-		{
-			item *temp_object = &object_list.getItem(i);
-			item *temp_subject = &subject_list.getItem(i);
-
-			int c_end = object_list.getCriterionAmount(i);
-			for (int c = 0; c < c_end; ++c)
-			{
-				objects_vectors[i][j] = compare
-
-				if (lists.get_object_criterion(i, c) <= lists.get_subject_criterion(j, c)) objects_vectors[i][j] = 0;
-				else objects_vectors[i][j] = lists.get_object_criterion(i, c) - lists.get_subject_criterion(j, c);
-
-				if (lists.getCriteriaVector(i, c) <= lists.get_object_criterion(j, c)) subjects_vectors[i][j] = 0;
-				else subjects_vectors[i][j] = lists.get_subject_criterion(i, c) - lists.get_object_criterion(j, c);
-			}
-
-			delete temp_object;
-			delete temp_subject;
-		}
-	}*/
 }
 
 int getPosOfMax(vector<element> list, char ch)
@@ -187,35 +106,34 @@ int getPosOfMax(vector<element> list, char ch)
 }
 
 
-void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item>> o_vec)
+void preference(int *&preference, vector<vector<item>> subjectVector, vector<vector<item>> objectVector)
 {
 	int N = items::getAmount();
 	
 	while (N > 0)
 	{
-		string **o_matrix = new string *[N];
-		string **c_matrix = new string *[N];
+		string **objectMatrix = new string *[N];
+		string **subjectMatrix = new string *[N];
 		for (int count = 0; count < N; ++count)
 		{
-			o_matrix[count] = new string[N];
-			c_matrix[count] = new string[N];
+			objectMatrix[count] = new string[N];
+			subjectMatrix[count] = new string[N];
 		}
 		
-		generateLayers(N, o_matrix, c_vec);
-		generateLayers(N, c_matrix, o_vec);
+		generateLayers(N, objectMatrix, subjectVector);
+		generateLayers(N, subjectMatrix, objectVector);
 
 		for (int i = 0; i < N; ++i)
 		{
-			for (int j = i+1; j < N; ++j) o_matrix[i][j].swap(o_matrix[j][i]);
+			for (int j = i+1; j < N; ++j) objectMatrix[i][j].swap(objectMatrix[j][i]);
 		}
 
-		printMatrix(N, c_vec, o_matrix, o_vec, c_matrix);
+		printMatrix(N, subjectVector, objectMatrix, objectVector, subjectMatrix);
 
 		char str1[7] = { 'D', 'D', 'H', 'H', 'D', ' ', 'H' };
 		string str2;
 
-		//list preference_list;
-		vector<element> preference_list;
+		vector<element> preferenceVector;
 
 		bool check = false;
 		for (int m = 1; m <= N && check == false; ++m)
@@ -227,10 +145,9 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 				{
 					for (int j = 0; j < N; ++j)
 					{
-						if (o_matrix[i][j] == (str1[k1] + str2) && c_matrix[i][j] == (str1[k2] + str2) && o_matrix[i][j][1] == str2[0] && c_matrix[i][j][1] == str2[0])
+						if (objectMatrix[i][j] == (str1[k1] + str2) && subjectMatrix[i][j] == (str1[k2] + str2) && objectMatrix[i][j][1] == str2[0] && subjectMatrix[i][j][1] == str2[0])
 						{
-							//preference_list.add(j, i);
-							preference_list.push_back(element(j, i));
+							preferenceVector.push_back(element(j, i));
 							check = true;
 						}
 					}
@@ -238,53 +155,47 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 			}
 		}
 
-		for (int k = 0, i; k < preference_list.size(); ++k)
+		for (int k = 0, i; k < preferenceVector.size(); ++k)
 		{
-			for (i = 0; i < preference_list.size() && k < preference_list.size(); ++i)
+			for (i = 0; i < preferenceVector.size() && k < preferenceVector.size(); ++i)
 			{
-				//if (k != i && preference_list.get(k, 0) == preference_list.get(i, 0))
-				if (k != i && preference_list.at(k).x == preference_list.at(i).x)
+				if (k != i && preferenceVector.at(k).x == preferenceVector.at(i).x)
 				{
 					int temp = 0;
-					for (int j = 0; j < c_vec[0][0].criterionAmount; ++j)
+					for (int j = 0; j < subjectVector[0][0].criterionAmount; ++j)
 					{
-						//temp += c_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criteriaVector[j] - c_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criteriaVector[j];
-						temp += c_vec[preference_list.at(k).x][preference_list.at(k).y].criteriaVector[j] - c_vec[preference_list.at(i).x][preference_list.at(i).y].criteriaVector[j];
+						temp += subjectVector[preferenceVector.at(k).x][preferenceVector.at(k).y].criteriaVector[j] - subjectVector[preferenceVector.at(i).x][preferenceVector.at(i).y].criteriaVector[j];
 					}
 
 					if (temp > 0)
 					{
-						//preference_list.del(i);
-						preference_list.erase(preference_list.begin()+i);
+						preferenceVector.erase(preferenceVector.begin()+i);
 						--i;
 					}
 					else
 					{
-						//preference_list.del(k);
-						preference_list.erase(preference_list.begin() + k);
+						preferenceVector.erase(preferenceVector.begin() + k);
 						i = -1;
 					}					
 					continue;
 				}
 
-				//if (k != i && preference_list.get(k, 1) == preference_list.get(i, 1))
-				if (k != i && preference_list.at(k).y == preference_list.at(i).y)
+				if (k != i && preferenceVector.at(k).y == preferenceVector.at(i).y)
 				{
 					int temp = 0;
-					for (int j = 0; j < o_vec[0][0].criterionAmount; ++j)
+					for (int j = 0; j < objectVector[0][0].criterionAmount; ++j)
 					{
-						//temp += o_vec[preference_list.get(k, 0)][preference_list.get(k, 1)].criteriaVector[j] - o_vec[preference_list.get(i, 0)][preference_list.get(i, 1)].criteriaVector[j];
-						temp += o_vec[preference_list.at(k).x][preference_list.at(k).y].criteriaVector[j] - o_vec[preference_list.at(i).x][preference_list.at(i).y].criteriaVector[j];
+						temp += objectVector[preferenceVector.at(k).x][preferenceVector.at(k).y].criteriaVector[j] - objectVector[preferenceVector.at(i).x][preferenceVector.at(i).y].criteriaVector[j];
 					}
 
 					if (temp > 0)
 					{
-						preference_list.erase(preference_list.begin() + i);
+						preferenceVector.erase(preferenceVector.begin() + i);
 						--i;
 					}
 					else
 					{
-						preference_list.erase(preference_list.begin() + k);
+						preferenceVector.erase(preferenceVector.begin() + k);
 						i = -1;
 					}
 					continue;
@@ -292,49 +203,40 @@ void preference(int *&preference, vector<vector<item>> c_vec, vector<vector<item
 			}
 		}
 
-		for (int i = 0; i < preference_list.size(); ++i)
+		for (int i = 0; i < preferenceVector.size(); ++i)
 		{
-			//preference[c_vec[preference_list.get(i, 0)][0].ID - 1] = o_vec[preference_list.get(i, 1)][0].ID;
-			preference[c_vec[preference_list.at(i).x][0].ID - 1] = o_vec[preference_list.at(i).y][0].ID;
+			preference[subjectVector[preferenceVector.at(i).x][0].ID - 1] = objectVector[preferenceVector.at(i).y][0].ID;
 		}
 
-		for (int i = 0, iter_x, iter_y; i < preference_list.size(); ++i)
+		for (int i = 0, iter_x, iter_y; i < preferenceVector.size(); ++i)
 		{
-			iter_x = getPosOfMax(preference_list, 'x');
-			iter_y = getPosOfMax(preference_list, 'y');
+			iter_x = getPosOfMax(preferenceVector, 'x');
+			iter_y = getPosOfMax(preferenceVector, 'y');
 
 			for (int n = 0; n < N; ++n)
 			{
-				//c_vec[n].erase(c_vec[n].begin() + preference_list.get(iter_y, 1));
-				c_vec[n].erase(c_vec[n].begin() + preference_list.at(iter_y).y);
-				//o_vec[n].erase(o_vec[n].begin() + preference_list.get(iter_x, 0));
-				o_vec[n].erase(o_vec[n].begin() + preference_list.at(iter_x).x);
+				subjectVector[n].erase(subjectVector[n].begin() + preferenceVector.at(iter_y).y);
+				objectVector[n].erase(objectVector[n].begin() + preferenceVector.at(iter_x).x);
 			}
+			subjectVector.erase(subjectVector.begin() + preferenceVector.at(iter_x).x);
+			objectVector.erase(objectVector.begin() + preferenceVector.at(iter_y).y);
 
-			//c_vec.erase(c_vec.begin() + preference_list.get(iter_x, 0));
-			c_vec.erase(c_vec.begin() + preference_list.at(iter_x).x);
-			//o_vec.erase(o_vec.begin() + preference_list.get(iter_y, 1));
-			o_vec.erase(o_vec.begin() + preference_list.at(iter_y).y);
-
-			//preference_list.set(iter_x, 'x');
-			preference_list.at(iter_x).x = -1;
-			//preference_list.set(iter_y, 'y');
-			preference_list.at(iter_y).y = -1;
+			preferenceVector.at(iter_x).x = -1;
+			preferenceVector.at(iter_y).y = -1;
 
 			--N;
 		}
 
-		printVector(N, false, c_vec);
-		printVector(N, true, o_vec);
+		printVector(N, false, subjectVector);
+		printVector(N, true, objectVector);
 		
 		for (int count = 0; count < N; ++count)
 		{
-			delete[] o_matrix[count];
-			delete[] c_matrix[count];
+			delete[] objectMatrix[count];
+			delete[] subjectMatrix[count];
 		}
-		delete[] o_matrix;
-		delete[] c_matrix;
-//		preference_list.~list();
+		delete[] objectMatrix;
+		delete[] subjectMatrix;
 	}
 }
 
@@ -457,48 +359,6 @@ void generateLayers(int N, string **&matrix, vector<vector<item>> &vec)
 	layer.~vector();
 	for (int count = 0; count < N; ++count) delete[] R[count];
 	delete[] R;
-
-	/*int N = list::get_number();
-
-	char **R = new char *[N];
-	for (int count = 0; count < N; ++count) R[count] = new char [N];
-
-	for (int i = 0; i < N; ++i)
-	{
-	for (int j = i; j < N; ++j)
-	{
-	if (i != j)
-	{
-	R[i][j] = compare(objects_vectors[i], objects_vectors[j]);
-
-	if (R[i][j] == '>') R[j][i] == '<';
-	else if (R[i][j] == '<') R[j][i] == '>';
-	else R[j][i] = R[i][j];
-	}
-	else R[i][j] = '=';
-	}
-	}
-
-	vector<int> layer;
-
-	bool check, check_H = false, check_D = false;
-	for (int i = 0; i < N; ++i)
-	{
-	check = true;
-	for (int j = 0; j < N, check != false; ++j)
-	{
-	if (R[i][j] == '<') check == false;
-	}
-	if (check == true) layer.push_back(i);
-	}
-
-	if (layer.size() != 1)
-	{
-	for (int i = 0; i < layer.size(); ++i)
-	{
-
-	}
-	}*/
 }
 
 void printMatrix(int N, vector<vector<item>> &c_vec, string **&o_matrix, vector<vector<item>> &o_vec, string **&c_matrix)

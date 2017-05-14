@@ -12,8 +12,6 @@ public:
 		x = paramX;
 		y = paramY;
 	}
-	element *previous = 0; //”казатель на предыдущий элемент
-	element *next = 0; //”казатель на следующий элемент
 };
 #endif
 
